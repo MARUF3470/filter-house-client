@@ -50,7 +50,7 @@ const Home = () => {
 
     return (
         <div>
-            <div className="carousel w-11/12 mx-auto h-full my-2">
+            <div className="carousel w-11/12 mx-auto h-3/4 my-2">
                 {
                     bannarData.map(slide => <Banner key={slide.id} slide={slide}></Banner>)
                 }
