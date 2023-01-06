@@ -15,17 +15,17 @@ const Categories = () => {
             pic: 'https://d1e00ek4ebabms.cloudfront.net/production/c0243c91-26b6-4799-9ea1-781b6b10718b.jpg'
         },
         {
-            id: '02',
+            id: '03',
             name: 'Generator Filters',
             pic: 'https://media.istockphoto.com/id/451626711/photo/standby-generator-installed-indoors.jpg?s=612x612&w=0&k=20&c=HvnTry_xm4kC8sTndAi5CkcgYzWTEB8gXwM7ZsarLps='
         },
         {
-            id: '03',
+            id: '04',
             name: 'Air Compressor Filters',
             pic: 'https://indoair.com/images/indoair-product-home.webp'
         },
         {
-            id: '04',
+            id: '05',
             name: 'Industrial Filter',
             pic: 'https://www.windpowerengineering.com/wp-content/uploads/2017/10/Wartsila-50SG.png'
         }

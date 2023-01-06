@@ -15,9 +15,10 @@ const DashboardLayOut = () => {
                     <Outlet></Outlet>
                 </div>
                 <div className="drawer-side lg:bg-slate-300">
-                    <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
+                    <label htmlFor="dashboard-drawer" className="drawer-overlay w-1/2"></label>
                     <ul className="menu p-4 w-80 text-base-content">
-                        <Link className=' btn btn-ghost justify-start' to='/dashboard/addproducts'>Add Product</Link>
+                        <Link className=' btn btn-ghost justify-start w-1/2' to='/dashboard/addproducts'>Add Product</Link>
+                        <Link className=' btn btn-ghost justify-start w-1/2' to='/dashboard/allusers'>All Users</Link>
                     </ul>
                 </div>
             </div>

@@ -47,7 +47,6 @@ const Home = () => {
             next: 1
         }
     ]
-
     return (
         <div>
             <div className="carousel w-11/12 mx-auto h-3/4 my-2">
