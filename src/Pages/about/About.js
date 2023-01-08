@@ -13,11 +13,12 @@ const About = () => {
     const handleClientEmail = (data, event) => {
         event.preventDefault()
         //console.log(data)
-        emailjs.sendForm('service_nhro12h', 'template_mrsptgl', form.current, 'TEH9ZXddwbom_iuuq')
+        emailjs.sendForm(process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_TEMPLATE_ID, form.current, process.env.REACT_APP_PUBLIC_KEY)
             .then((result) => {
                 console.log(result.text);
                 if (result.text) {
                     return toast.success('Email send successfully')
+                    event.target.reset()
                 }
             }, (error) => {
                 console.log(error.text);

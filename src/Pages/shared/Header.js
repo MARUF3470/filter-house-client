@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { themeChange } from 'theme-change';
 import { Fragment } from 'react'
@@ -6,11 +6,19 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
 import logo from '../../components/images/filterpic/car-air-filters-icon-simple-260nw-713697937-removebg-preview.png'
+import { AuthContext } from '../authintication/AuthProvider';
+import { toast } from 'react-hot-toast';
 const Header = () => {
     useEffect(() => {
         themeChange(false)
     }, [])
+    const { user, logOut } = useContext(AuthContext)
     const location = useLocation()
+    const handleSingOut = () => {
+        logOut()
+            .then(res => { toast.success('Logout successfull') })
+            .catch(err => console.log(err))
+    }
     return (
         <Navbar
             fluid={true}
@@ -36,14 +44,14 @@ const Header = () => {
                 <Dropdown
                     arrowIcon={false}
                     inline={true}
-                    label={<Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded={true} />}
+                    label={<Avatar alt="User settings" img={user?.photoURL} rounded={true} />}
                 >
                     <Dropdown.Header>
                         <span className="block text-sm">
-                            Bonnie Green
+                            {user?.displayName}
                         </span>
                         <span className="block truncate text-sm font-medium">
-                            name@flowbite.com
+                            {user?.email}
                         </span>
                     </Dropdown.Header>
                     <Dropdown.Item>
@@ -54,7 +62,7 @@ const Header = () => {
                     </Dropdown.Item>
                     <Dropdown.Divider />
                     <Dropdown.Item>
-                        Sign out
+                        {user?.email && <button onClick={handleSingOut}>Sign out</button>}
                     </Dropdown.Item>
                 </Dropdown>
                 <Navbar.Toggle />
@@ -62,8 +70,9 @@ const Header = () => {
             <Navbar.Collapse>
                 <Link to='/' className='text-white'>Home</Link>
                 <Link to='/dashboard' className='text-white'>DashBoard</Link>
-                <Link to='/registration' className='text-white'>Registration</Link>
-                <Link to='/login' className='text-white'>Login</Link>
+
+                {!user?.email && <> <Link to='/login' className='text-white'>Login</Link><Link to='/registration' className='text-white'>Registration</Link>
+                </>}
                 <Link to='/contact' className='text-white'>Contuct us</Link>
             </Navbar.Collapse>
         </Navbar>

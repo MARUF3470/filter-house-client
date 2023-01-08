@@ -1,12 +1,58 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../AuthProvider';
 
 const Registration = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
+    const [error, setError] = useState('')
+    const { registration, updateUser } = useContext(AuthContext)
+    const navigate = useNavigate()
+    const imgKey = process.env.REACT_APP_imgkey
+
     const handleRegistration = (data, event) => {
+        setError('')
         event.preventDefault()
         console.log(data)
+        const image = data.picture[0]
+        console.log(image)
+        const formData = new FormData();
+        formData.append('image', image)
+        const url = `https://api.imgbb.com/1/upload?key=${imgKey}`
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => res.json())
+            .then(imgData => {
+                if (imgData.success) {
+                    registration(data.email, data.password)
+                        .then(res => {
+                            const user = res.user;
+                            toast.success('User registration done')
+                            //  event.target.reset()
+                            console.log(imgData.data.url)
+                            const profile = {
+                                displayName: data.name,
+                                photoURL: imgData.data.url
+                            }
+                            updateUserInfo(profile)
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            setError(err.message)
+                        })
+
+                }
+            })
+        const updateUserInfo = profile => {
+            updateUser(profile)
+                .then(() => {
+                    navigate('/')
+                })
+                .catch(err => console.error(err))
+        }
     }
     return (
         <div>
@@ -31,14 +77,14 @@ const Registration = () => {
                             <label className="label">
                                 <span className="label-text">Password</span>
                             </label>
-                            <input type="text" {...register('password', { required: 'Your password is missing' })} placeholder="Enter your password" className="input input-bordered w-full" />
+                            <input type="password" {...register('password', { required: 'Your password is missing' })} placeholder="Enter your password" className="input input-bordered w-full" />
                             {errors.password && <p className='text-red-600 mt-2'>{errors.password.message}</p>}
                         </div>
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Confirm Password</span>
                             </label>
-                            <input type="text" {...register('cpassword', { required: 'Retype your password' })} placeholder="Retype your password" className="input input-bordered w-full" />
+                            <input type="password" {...register('cpassword', { required: 'Retype your password' })} placeholder="Retype your password" className="input input-bordered w-full" />
                             {errors.cpassword && <p className='text-red-600 mt-2'>{errors.cpassword.message}</p>}
                         </div>
                         <label className="label">
@@ -55,6 +101,7 @@ const Registration = () => {
                             </label>
                         </div>
                         {errors.picture && <p className='text-red-600 mt-2'>{errors.picture.message}</p>}
+                        <p className='text-red-600'>{error}</p>
                         <div className='flex justify-center'>
                             <input type="submit" className='text-white bg-gradient-to-br w-1/2 my-4 from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2' value="Register" />
                         </div>

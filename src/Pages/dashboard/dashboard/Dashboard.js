@@ -5,7 +5,7 @@ const Dashboard = () => {
     return (
         <div>
             <Lottie animationData={welcomingAnimation} className='h-96' loop={true} />
-            <h1 class="text-xl lg:text-4xl text-center font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+            <h1 className="text-xl lg:text-4xl text-center font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
                 Welcome to dashboard
             </h1>
         </div>

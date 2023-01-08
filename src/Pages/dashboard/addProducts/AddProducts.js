@@ -1,11 +1,49 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
+import { toast } from 'react-hot-toast';
 
 const AddProducts = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
+    const imgKey = process.env.REACT_APP_imgkey
     const handleAddProduct = (data, event) => {
         event.preventDefault()
         console.log(data)
+        const image = data.picture[0]
+        const formData = new FormData();
+        formData.append('image', image)
+        const url = `https://api.imgbb.com/1/upload?key=${imgKey}`
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => res.json())
+            .then(imgdata => {
+                if (imgdata.success) {
+                    const product = {
+                        category: data.category,
+                        type: data.type,
+                        name: data.name,
+                        price: data.price,
+                        img: imgdata.data.url
+                    }
+                    fetch('http://localhost:5000/products', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(product)
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log(data)
+                            if (data.acknowledged) {
+                                toast.success('Product added successfully')
+                                event.target.reset()
+                            }
+                        })
+                }
+            })
+
     }
     return (
         <form onSubmit={handleSubmit(handleAddProduct)}>
