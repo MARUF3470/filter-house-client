@@ -8,6 +8,7 @@ import AddProducts from "../Pages/dashboard/addProducts/AddProducts";
 import Allusers from "../Pages/dashboard/allUsers/Allusers";
 import DashboardLayOut from "../Pages/dashboard/dashboadLayOut/DashboardLayOut";
 import Dashboard from "../Pages/dashboard/dashboard/Dashboard";
+import MyProducts from "../Pages/dashboard/myProducts/MyProducts";
 import Home from "../Pages/Home/Home";
 
 const router = createBrowserRouter([
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
             {
                 path: '/dashboard/allusers',
                 element: <Allusers></Allusers>
+            },
+            {
+                path: '/dashboard/myproducts',
+                element: <MyProducts></MyProducts>
             }
         ]
     }

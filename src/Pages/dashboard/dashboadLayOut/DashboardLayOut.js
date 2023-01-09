@@ -19,6 +19,7 @@ const DashboardLayOut = () => {
                     <ul className="menu p-4 w-80 text-base-content">
                         <Link className=' btn btn-ghost justify-start w-1/2' to='/dashboard/addproducts'>Add Product</Link>
                         <Link className=' btn btn-ghost justify-start w-1/2' to='/dashboard/allusers'>All Users</Link>
+                        <Link className=' btn btn-ghost justify-start w-1/2' to='/dashboard/myproducts'>My Products</Link>
                     </ul>
                 </div>
             </div>
