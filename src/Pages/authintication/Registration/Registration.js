@@ -1,7 +1,8 @@
+import { useQuery } from '@tanstack/react-query';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
-import { Link, useNavigate } from 'react-router-dom';
+import { json, Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthProvider';
 
 const Registration = () => {
@@ -31,13 +32,13 @@ const Registration = () => {
                         .then(res => {
                             const user = res.user;
                             toast.success('User registration done')
-                            //  event.target.reset()
+                            event.target.reset()
                             console.log(imgData.data.url)
                             const profile = {
                                 displayName: data.name,
                                 photoURL: imgData.data.url
                             }
-                            updateUserInfo(profile)
+                            updateUserInfo(profile, data.email)
                         })
                         .catch(err => {
                             console.log(err)
@@ -46,7 +47,24 @@ const Registration = () => {
 
                 }
             })
-        const updateUserInfo = profile => {
+        const updateUserInfo = (profile, email) => {
+            const savedUser = {
+                email: email,
+                name: profile.displayName,
+                img: profile.photoURL
+            }
+            fetch('http://localhost:5000/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(savedUser)
+            })
+                .then(res => res.json())
+                .then(data => {
+
+                })
+                .catch(err => console.error(err))
             updateUser(profile)
                 .then(() => {
                     navigate('/')

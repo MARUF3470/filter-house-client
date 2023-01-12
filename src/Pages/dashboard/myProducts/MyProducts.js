@@ -11,9 +11,8 @@ const MyProducts = () => {
             return data
         }
     })
-    console.log(products)
     return (
-        <div className="overflow-x-auto w-full">
+        <div className="overflow-x-auto w-full ">
             <table className="table w-full">
                 <thead>
                     <tr>
@@ -27,7 +26,6 @@ const MyProducts = () => {
                 <tbody>
                     {products.map(product => <Products key={product._id} product={product} refetch={refetch}></Products>)}
                 </tbody>
-
             </table>
         </div>
     );

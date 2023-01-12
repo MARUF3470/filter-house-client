@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createContext } from "react";
 import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import app from "../../firebase/firebase.config";
+import { toast } from 'react-hot-toast';
 
 export const AuthContext = createContext()
 const auth = getAuth(app);
@@ -28,7 +29,6 @@ const AuthProvider = ({ children }) => {
         const unsubcribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser)
             setLoading(false)
-            console.log(currentUser)
         })
         return () => unsubcribe()
     }, [])

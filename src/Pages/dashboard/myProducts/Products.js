@@ -1,20 +1,39 @@
 import React from 'react';
 import { toast } from 'react-hot-toast';
+import { json } from 'react-router-dom';
 
 const Products = ({ product, refetch }) => {
-    console.log(product)
     const handleDelete = id => {
         const confirmation = window.confirm(`Do you want to delete ${product?.name}`)
-        fetch(`http://localhost:5000/products/${id}`, {
-            method: 'DELETE',
+        if (confirmation) {
+            fetch(`http://localhost:5000/products/${id}`, {
+                method: 'DELETE',
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.acknowledged) {
+                        toast.success('Product deteled')
+                        refetch()
+                    }
+                })
+        }
+    }
+    const handleAdvertise = (value) => {
+        fetch(`http://localhost:5000/products/${product._id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ advertise: value })
         })
             .then(res => res.json())
             .then(data => {
                 if (data.acknowledged) {
-                    toast.success('Product deteled')
+                    toast.success('Advertisement Updated')
                     refetch()
                 }
             })
+
     }
     return (
         <tr>
@@ -41,7 +60,7 @@ const Products = ({ product, refetch }) => {
                 <button onClick={() => handleDelete(product?._id)} className="btn btn-ghost btn-xs">Delete</button>
             </th>
             <th>
-                <button className="btn btn-ghost btn-xs">Advertise</button>
+                {product?.advertise ? <button onClick={() => handleAdvertise(false)} className="btn btn-ghost btn-xs">Remove Advertise</button> : <button onClick={() => handleAdvertise(true)} className="btn btn-ghost btn-xs">Advertise</button>}
             </th>
         </tr>
     );

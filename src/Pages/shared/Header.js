@@ -8,12 +8,21 @@ import { Avatar, Dropdown, Navbar } from 'flowbite-react';
 import logo from '../../components/images/filterpic/car-air-filters-icon-simple-260nw-713697937-removebg-preview.png'
 import { AuthContext } from '../authintication/AuthProvider';
 import { toast } from 'react-hot-toast';
+import { useQuery } from '@tanstack/react-query';
 const Header = () => {
     useEffect(() => {
         themeChange(false)
     }, [])
     const { user, logOut } = useContext(AuthContext)
     const location = useLocation()
+    const { data: Suser = [], } = useQuery({
+        queryKey: ['users', user?.email],
+        queryFn: async () => {
+            const res = await fetch(`http://localhost:5000/users/${user?.email}`)
+            const data = await res.json()
+            return data
+        }
+    })
     const handleSingOut = () => {
         logOut()
             .then(res => { toast.success('Logout successfull') })
@@ -44,18 +53,18 @@ const Header = () => {
                 <Dropdown
                     arrowIcon={false}
                     inline={true}
-                    label={<Avatar alt="User settings" img={user?.photoURL} rounded={true} />}
+                    label={<Avatar alt="User settings" img={Suser?.img} rounded={true} />}
                 >
                     <Dropdown.Header>
                         <span className="block text-sm">
-                            {user?.displayName}
+                            {Suser?.name}
                         </span>
                         <span className="block truncate text-sm font-medium">
-                            {user?.email}
+                            {Suser?.email}
                         </span>
                     </Dropdown.Header>
                     <Dropdown.Item>
-                        Settings
+                        Edit Profile
                     </Dropdown.Item>
                     <Dropdown.Item>
                         Earnings

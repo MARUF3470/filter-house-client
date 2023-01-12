@@ -48,7 +48,7 @@ const Product = ({ product }) => {
         <div>
             <div className="card w-96 bg-base-100 shadow-xl">
                 <figure className="p-3">
-                    <img src={product.img} alt="Shoes" className="rounded-xl" />
+                    <img src={product.img} alt="Shoes" className="rounded-xl h-56 w-full" />
                 </figure>
                 <div className="card-body">
                     <h2 className="card-title">{product.name}</h2>
