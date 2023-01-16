@@ -15,7 +15,6 @@ const CategoryTypes = () => {
         }
         setSelectedProducts(Type)
     }
-    console.log(selectedProducts)
     return (
         <div>
             <div className='my-10 w-3/4 mx-auto'>
@@ -55,7 +54,7 @@ const CategoryTypes = () => {
             </div>
             {
                 selectedProducts?.length ?
-                    <div className='grid grid-cols-4 w-11/12 mx-auto my-6'>
+                    <div className='grid grid-cols-2 lg:grid-cols-4 w-11/12 mx-auto my-6'>
                         {
                             selectedProducts.map(product => <Product key={product._id} product={product}></Product>)
                         }

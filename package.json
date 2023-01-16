@@ -25,6 +25,7 @@
     "react-scripts": "5.0.1",
     "tailwind-scrollbar-hide": "^1.1.7",
     "theme-change": "^2.2.0",
+    "tw-elements": "^1.0.0-alpha13",
     "typewriter-effect": "^2.19.0",
     "web-vitals": "^2.1.4"
   },

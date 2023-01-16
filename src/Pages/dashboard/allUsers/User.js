@@ -1,6 +1,12 @@
 import React from 'react';
 
-const User = ({ suser }) => {
+const User = ({ suser, refetch }) => {
+    const handleRole = () => {
+
+    }
+    const handleDelete = () => {
+
+    }
     return (
         <tr>
             <td>
@@ -19,9 +25,9 @@ const User = ({ suser }) => {
                     <div className="text-sm opacity-50">{suser?.email}</div>
                 </div>
             </td>
-            <td><button className='btn btn-xs btn-ghost'>Make Admin</button></td>
+            <td><button onClick={handleRole} className='btn btn-xs pl-0 btn-ghost'>Make Admin</button></td>
             <th>
-                <button className="btn btn-ghost btn-xs text-red-600">Delete</button>
+                <button onClick={handleDelete} className="btn pl-0 btn-ghost btn-xs text-red-600">Delete</button>
             </th>
         </tr>
     );

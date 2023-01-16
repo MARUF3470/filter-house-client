@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import Header from '../../shared/Header';
 import { CgMenuGridO } from 'react-icons/cg';
+import { useQuery } from '@tanstack/react-query';
+import { AuthContext } from '../../authintication/AuthProvider';
 const DashboardLayOut = () => {
+    const { user } = useContext(AuthContext)
+    const { data: Suser = [], refetch, isLoading } = useQuery({
+        queryKey: ['users', user?.email],
+        queryFn: async () => {
+            const res = await fetch(`http://localhost:5000/users/${user?.email}`)
+            const data = await res.json()
+            return data
+        }
+    })
+    if (isLoading) {
+        return <p className='text-center lg:my-80'>Loading...</p>
+    }
     return (
         <div>
             <Header></Header>
@@ -17,9 +31,14 @@ const DashboardLayOut = () => {
                 <div className="drawer-side lg:bg-slate-300">
                     <label htmlFor="dashboard-drawer" className="drawer-overlay w-1/2"></label>
                     <ul className="menu p-4 w-80 text-base-content">
-                        <Link className=' btn btn-ghost justify-start w-1/2' to='/dashboard/addproducts'>Add Product</Link>
-                        <Link className=' btn btn-ghost justify-start w-1/2' to='/dashboard/allusers'>All Users</Link>
-                        <Link className=' btn btn-ghost justify-start w-1/2' to='/dashboard/myproducts'>My Products</Link>
+                        {
+                            Suser?.role && <><Link className=' btn btn-ghost justify-start w-1/2' to='/dashboard/addproducts'>Add Product</Link>
+                                <Link className=' btn btn-ghost justify-start w-1/2' to='/dashboard/allusers'>All Users</Link>
+                                <Link className=' btn btn-ghost justify-start w-1/2' to='/dashboard/myproducts'>My Products</Link></>
+                        }
+                        {
+                            !Suser?.role && <Link className=' btn btn-ghost justify-start w-1/2' to='/dashboard/mycart'>My Cart</Link>
+                        }
                     </ul>
                 </div>
             </div>

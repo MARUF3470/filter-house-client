@@ -78,7 +78,7 @@ const Header = () => {
             </div>
             <Navbar.Collapse>
                 <Link to='/' className='text-white'>Home</Link>
-                <Link to='/dashboard' className='text-white'>DashBoard</Link>
+                {user?.email && <Link to='/dashboard' className='text-white'>DashBoard</Link>}
 
                 {!user?.email && <> <Link to='/login' className='text-white'>Login</Link><Link to='/registration' className='text-white'>Registration</Link>
                 </>}
