@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../authintication/AuthProvider';
-
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
 const Product = ({ product }) => {
     //console.log(product)
     const navigate = useNavigate()
@@ -47,9 +48,11 @@ const Product = ({ product }) => {
     return (
         <div>
             <div className="card w-full mx-auto bg-base-100 shadow-xl">
-                <figure className="p-3">
-                    <img src={product.img} alt="Shoes" className="rounded-xl h-56 w-full" />
-                </figure>
+                <Zoom>
+                    <figure className="p-3">
+                        <img src={product.img} alt="Shoes" className="rounded-xl h-56 w-full" />
+                    </figure>
+                </Zoom>
                 <div className="card-body">
                     <h2 className="card-title">{product.name}</h2>
                     <p>Price: ${product.price}</p>

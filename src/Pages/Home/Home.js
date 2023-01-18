@@ -6,6 +6,7 @@ import pic4 from '../../components/images/filterpic/filterpicture1.png'
 import pic5 from '../../components/images/filterpic/nf3.jpg'
 import pic6 from '../../components/images/filterpic/fp5.jpg'
 import pic7 from '../../components/images/filterpic/fp4.png'
+
 import Banner from './Banner';
 import Categories from '../category/Categories';
 import { useQuery } from '@tanstack/react-query';

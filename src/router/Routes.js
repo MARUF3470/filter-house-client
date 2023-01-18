@@ -11,6 +11,7 @@ import Dashboard from "../Pages/dashboard/dashboard/Dashboard";
 import MyProducts from "../Pages/dashboard/myProducts/MyProducts";
 import Home from "../Pages/Home/Home";
 import Mycart from "../Pages/myCart/Mycart";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
     {
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/category/:id',
-                element: <CategoryTypes></CategoryTypes>,
+                element: <PrivateRoute><CategoryTypes></CategoryTypes></PrivateRoute>,
                 loader: ({ params }) => fetch(`http://localhost:5000/products/${params.id}`)
 
             },
