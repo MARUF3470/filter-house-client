@@ -6,7 +6,7 @@ import router from "./router/Routes";
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <Toaster
         position="top-center"
         reverseOrder={false}

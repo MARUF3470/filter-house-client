@@ -9,14 +9,19 @@ import Allusers from "../Pages/dashboard/allUsers/Allusers";
 import DashboardLayOut from "../Pages/dashboard/dashboadLayOut/DashboardLayOut";
 import Dashboard from "../Pages/dashboard/dashboard/Dashboard";
 import MyProducts from "../Pages/dashboard/myProducts/MyProducts";
+import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import Home from "../Pages/Home/Home";
 import Mycart from "../Pages/myCart/Mycart";
+import Payment from "../Pages/myCart/Payment";
+import AdminPrivateRoute from "./AdminRoute";
+import BuyerPrivateRoute from "./BuyerRoute";
 import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <Main></Main>,
+        errorElement: <ErrorPage></ErrorPage>,
         children: [
             {
                 path: '/',
@@ -45,6 +50,7 @@ const router = createBrowserRouter([
     {
         path: '/dashboard',
         element: <DashboardLayOut></DashboardLayOut>,
+        errorElement: <ErrorPage></ErrorPage>,
         children: [
             {
                 path: '/dashboard',
@@ -52,19 +58,24 @@ const router = createBrowserRouter([
             },
             {
                 path: '/dashboard/addproducts',
-                element: <AddProducts></AddProducts>
+                element: <AdminPrivateRoute><AddProducts></AddProducts></AdminPrivateRoute>
             },
             {
                 path: '/dashboard/allusers',
-                element: <Allusers></Allusers>
+                element: <AdminPrivateRoute><Allusers></Allusers></AdminPrivateRoute>
             },
             {
                 path: '/dashboard/myproducts',
-                element: <MyProducts></MyProducts>
+                element: <AdminPrivateRoute><MyProducts></MyProducts></AdminPrivateRoute>
             },
             {
                 path: '/dashboard/mycart',
-                element: <Mycart></Mycart>
+                element: <BuyerPrivateRoute><Mycart></Mycart></BuyerPrivateRoute>
+            },
+            {
+                path: '/dashboard/payment/:id',
+                element: <Payment></Payment>,
+                loader: ({ params }) => fetch(`http://localhost:5000/cartProduct/${params.id}`)
             }
         ]
     }

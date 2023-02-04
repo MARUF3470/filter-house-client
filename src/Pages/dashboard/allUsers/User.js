@@ -25,9 +25,9 @@ const User = ({ suser, refetch }) => {
                     <div className="text-sm opacity-50">{suser?.email}</div>
                 </div>
             </td>
-            <td><button onClick={handleRole} className='btn btn-xs pl-0 btn-ghost'>Make Admin</button></td>
+            <td><button onClick={handleRole} className='btn btn-xs px-0 btn-ghost'>Make Admin</button></td>
             <th>
-                <button onClick={handleDelete} className="btn pl-0 btn-ghost btn-xs text-red-600">Delete</button>
+                <button onClick={handleDelete} className="btn px-0 btn-ghost btn-xs text-red-600">Delete</button>
             </th>
         </tr>
     );

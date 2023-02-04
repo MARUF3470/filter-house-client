@@ -4,15 +4,19 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../authintication/AuthProvider';
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
+import { useQuery } from '@tanstack/react-query';
 const Product = ({ product }) => {
-    //console.log(product)
     const navigate = useNavigate()
     const { user } = useContext(AuthContext)
+    const { data: sUser = [], isLoading, refetch } = useQuery({
+        queryKey: ['user', user?.email],
+        queryFn: async () => {
+            const res = await fetch(`http://localhost:5000/users/${user?.email}`)
+            const data = await res.json()
+            return data
+        }
+    })
     const handleCart = () => {
-        // if (!user.email) {
-
-        //     return navigate('/login')
-        // }
         try {
             const cartProduct = {
                 email: user.email,
@@ -57,7 +61,7 @@ const Product = ({ product }) => {
                     <h2 className="card-title">{product.name}</h2>
                     <p>Price: ${product.price}</p>
                     <div className="card-actions">
-                        <button onClick={handleCart} className="btn btn-primary btn-sm">Add to cart</button>
+                        {sUser?.role ? <button className="btn btn-primary btn-sm">Delete</button> : <button onClick={handleCart} className="btn btn-primary btn-sm">Add to cart</button>}
                     </div>
                 </div>
             </div>

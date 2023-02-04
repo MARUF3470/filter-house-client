@@ -57,10 +57,10 @@ const Products = ({ product, refetch }) => {
             </td>
             <td>${product.price}</td>
             <th>
-                <button onClick={() => handleDelete(product?._id)} className="btn btn-ghost btn-xs">Delete</button>
+                <button onClick={() => handleDelete(product?._id)} className="btn btn-ghost btn-xs px-0">Delete</button>
             </th>
             <th>
-                {product?.advertise ? <button onClick={() => handleAdvertise(false)} className="btn btn-ghost btn-xs">Remove Advertise</button> : <button onClick={() => handleAdvertise(true)} className="btn btn-ghost btn-xs">Advertise</button>}
+                {product?.advertise ? <button onClick={() => handleAdvertise(false)} className="btn btn-ghost btn-xs px-0">Remove Advertise</button> : <button onClick={() => handleAdvertise(true)} className="btn btn-ghost btn-xs">Advertise</button>}
             </th>
         </tr>
     );

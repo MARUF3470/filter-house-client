@@ -141,15 +141,15 @@ const Home = () => {
                     <div className='col-span-1 lg:col-span-2'>
                         <h5 className='text-lg font-bold'>Reviews</h5>
                         {reviews.map(review =>
-                            <figure class="border rounded-md p-3 shadow-lg mb-2" key={review._id}>
-                                <svg aria-hidden="true" class="w-6 h-6 text-gray-400 dark:text-gray-600" viewBox="0 0 24 27" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.017 18L14.017 10.609C14.017 4.905 17.748 1.039 23 0L23.995 2.151C21.563 3.068 20 5.789 20 8H24V18H14.017ZM0 18V10.609C0 4.905 3.748 1.038 9 0L9.996 2.151C7.563 3.068 6 5.789 6 8H9.983L9.983 18L0 18Z" fill="currentColor" /></svg>
+                            <figure className="border rounded-md p-3 shadow-lg mb-2" key={review._id}>
+                                <svg aria-hidden="true" className="w-6 h-6 text-gray-400 dark:text-gray-600" viewBox="0 0 24 27" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.017 18L14.017 10.609C14.017 4.905 17.748 1.039 23 0L23.995 2.151C21.563 3.068 20 5.789 20 8H24V18H14.017ZM0 18V10.609C0 4.905 3.748 1.038 9 0L9.996 2.151C7.563 3.068 6 5.789 6 8H9.983L9.983 18L0 18Z" fill="currentColor" /></svg>
                                 <blockquote>
-                                    <p class="italic font-medium text-gray-900">Review: {review?.review}</p>
+                                    <p className="italic font-medium text-gray-900">Review: {review?.review}</p>
                                 </blockquote>
-                                <figcaption class="">
-                                    <div class="flex items-center gap-1 dark:divide-gray-700">
-                                        <img class="w-8 h-8 rounded-full" src={review?.img} alt='' />
-                                        <cite class="pr-3 font-medium text-gray-900">{review?.name}</cite>
+                                <figcaption className="">
+                                    <div className="flex items-center gap-1 dark:divide-gray-700">
+                                        <img className="w-8 h-8 rounded-full" src={review?.img} alt='' />
+                                        <cite className="pr-3 font-medium text-gray-900">{review?.name}</cite>
                                     </div>
                                 </figcaption>
                             </figure>

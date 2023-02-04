@@ -4,22 +4,12 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../Pages/authintication/AuthProvider';
 
 const PrivateRoute = ({ children }) => {
-    const { user } = useContext(AuthContext)
+    const { user, loading } = useContext(AuthContext)
     const location = useLocation()
-    const { data: sUser = [], isLoading, refetch } = useQuery({
-        queryKey: ['user', user?.email],
-        queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/users/${user?.email}`)
-            const data = await res.json()
-            return data
-        }
-    })
-    if (isLoading) {
-        return <h1 className='text-center'>Loading...</h1>
+    if (loading) {
+        return <p className='text-center'>Loading....</p>
     }
-    console.log('from ', sUser)
-
-    if (sUser.role === true) {
+    if (user?.email) {
         return children
     }
     return <Navigate to='/login' state={{ from: location }} replace></Navigate>

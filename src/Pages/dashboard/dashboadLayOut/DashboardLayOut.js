@@ -15,7 +15,9 @@ const DashboardLayOut = () => {
         }
     })
     if (isLoading) {
-        return <p className='text-center lg:my-80'>Loading...</p>
+        return <>
+            <h1 className='text-3xl text-center lg:my-20'>To enter into dashboard, <Link className='link-primary' to='/login'>Login</Link> </h1>
+        </>
     }
     return (
         <div>
