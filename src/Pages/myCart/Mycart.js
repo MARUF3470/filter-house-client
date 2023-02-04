@@ -65,7 +65,7 @@ const Mycart = () => {
                             </td>
                             <td>
                                 {item?.price && !item.paid && <Link to={`/dashboard/payment/${item?._id}`} className='btn btn-xs btn-primary'>Buy</Link>}
-                                {item?.price && item.paid && <span>Success</span>}
+                                {item?.price && item.paid && <span className='text-sm text-green-500'>Paid</span>}
                             </td>
                             <th>
                                 <button className="btn btn-error btn-xs" onClick={() => handleDelete(item._id)}>Remove</button>

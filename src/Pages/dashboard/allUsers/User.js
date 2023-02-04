@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 const User = ({ suser, refetch }) => {
-    const handleRole = () => {
-
+    const [deleteUser, setDeleteUser] = useState(false)
+    if (deleteUser) {
+        fetch(`http://localhost:5000/user/${suser?._id}`, {
+            method: 'DELETE',
+            headers: { "Content-Type": "application/json" },
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.acknowledged) {
+                    toast.success('User Deleted')
+                    refetch()
+                }
+            })
     }
-    const handleDelete = () => {
+    const handleRole = () => {
 
     }
     return (
@@ -27,7 +39,17 @@ const User = ({ suser, refetch }) => {
             </td>
             <td><button onClick={handleRole} className='btn btn-xs px-0 btn-ghost'>Make Admin</button></td>
             <th>
-                <button onClick={handleDelete} className="btn px-0 btn-ghost btn-xs text-red-600">Delete</button>
+                <label htmlFor="my-modal" className="btn btn-circle btn-outline btn-xs">X</label>
+                <input type="checkbox" id="my-modal" className="modal-toggle" />
+                <div className="modal">
+                    <div className="modal-box">
+                        <h3 className="font-semibold text-lg">Do you want to delete {suser?.name}</h3>
+                        <div className="modal-action">
+                            <label htmlFor="my-modal" onClick={() => setDeleteUser(true)} className="btn btn-sm btn-outline">Delete</label>
+                            <label htmlFor="my-modal" className="btn btn-sm btn-outline">Cancel</label>
+                        </div>
+                    </div>
+                </div>
             </th>
         </tr>
     );
