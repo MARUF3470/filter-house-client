@@ -11,7 +11,11 @@ const Product = ({ product }) => {
     const { data: sUser = [], isLoading, refetch } = useQuery({
         queryKey: ['user', user?.email],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/users/${user?.email}`)
+            const res = await fetch(`http://localhost:5000/users/${user?.email}`, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('filterhouse-token')}`
+                }
+            })
             const data = await res.json()
             return data
         }
@@ -49,6 +53,21 @@ const Product = ({ product }) => {
             navigate('/login')
         }
     }
+    const deleteProduct = () => {
+        fetch(`http://localhost:5000/products/${product?._id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data) {
+                    toast.promise('Product deleted successfully')
+                    refetch()
+                }
+            })
+    }
     return (
         <div>
             <div className="card w-full mx-auto bg-base-100 shadow-xl">
@@ -61,7 +80,17 @@ const Product = ({ product }) => {
                     <h2 className="card-title">{product.name}</h2>
                     <p>Price: ${product.price}</p>
                     <div className="card-actions">
-                        {sUser?.role ? <button className="btn btn-primary btn-sm">Delete</button> : <button onClick={handleCart} className="btn btn-primary btn-sm">Add to cart</button>}
+                        {sUser?.role ? <> <label htmlFor="my-modal" className="btn btn-outline btn-xs">Delete</label>
+                            <input type="checkbox" id="my-modal" className="modal-toggle" />
+                            <div className="modal">
+                                <div className="modal-box">
+                                    <h3 className="font-semibold text-lg">Do you want to delete {product?.name}</h3>
+                                    <div className="modal-action">
+                                        <label htmlFor="my-modal" onClick={deleteProduct} className="btn btn-sm btn-outline">Delete</label>
+                                        <label htmlFor="my-modal" className="btn btn-sm btn-outline">Cancel</label>
+                                    </div>
+                                </div>
+                            </div></> : <button onClick={handleCart} className="btn btn-primary btn-sm">Add to cart</button>}
                     </div>
                 </div>
             </div>

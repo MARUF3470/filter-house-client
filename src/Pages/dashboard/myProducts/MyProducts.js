@@ -6,7 +6,11 @@ const MyProducts = () => {
     const { data: products = [], isLoading, refetch } = useQuery({
         queryKey: ['products'],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/products')
+            const res = await fetch('http://localhost:5000/products', {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('filterhouse-token')}`
+                }
+            })
             const data = await res.json()
             return data
         }

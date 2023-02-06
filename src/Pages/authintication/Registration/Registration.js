@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
-import { json, Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthProvider';
 
 const Registration = () => {
@@ -10,6 +10,9 @@ const Registration = () => {
     const [error, setError] = useState('')
     const { registration, updateUser } = useContext(AuthContext)
     const navigate = useNavigate()
+    const location = useLocation()
+
+    const from = location.state?.from?.pathname || '/'
     const imgKey = process.env.REACT_APP_imgkey
 
     const handleRegistration = (data, event) => {
@@ -31,7 +34,24 @@ const Registration = () => {
                     registration(data.email, data.password)
                         .then(res => {
                             const user = res.user;
+                            const currentUser = {
+                                email: user.email
+                            }
                             toast.success('User registration done')
+                            fetch('http://localhost:5000/jwt', {
+                                method: 'POST',
+                                headers: {
+                                    'content-type': 'application/json'
+                                },
+                                body: JSON.stringify(currentUser)
+                            })
+                                .then(res => res.json())
+                                .then(data => {
+                                    console.log(data);
+
+                                    localStorage.setItem('filterhouse-token', data.token);
+                                    navigate(from, { replace: true });
+                                });
                             event.target.reset()
                             console.log(imgData.data.url)
                             const profile = {

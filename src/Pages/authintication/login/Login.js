@@ -17,8 +17,24 @@ const Login = () => {
         login(data.email, data.password)
             .then(res => {
                 const user = res.user;
+                const currentUser = {
+                    email: user.email
+                }
                 if (user) {
-                    navigate(from, { replace: true });
+                    fetch('http://localhost:5000/jwt', {
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify(currentUser)
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log(data);
+
+                            localStorage.setItem('filterhouse-token', data.token);
+                            navigate(from, { replace: true });
+                        });
                     return toast.success('Login Successful')
                 }
             })

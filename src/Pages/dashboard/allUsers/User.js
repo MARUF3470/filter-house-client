@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { toast } from 'react-hot-toast';
+
 
 const User = ({ suser, refetch }) => {
     const [deleteUser, setDeleteUser] = useState(false)
@@ -13,11 +14,22 @@ const User = ({ suser, refetch }) => {
                 if (data.acknowledged) {
                     toast.success('User Deleted')
                     refetch()
+                    setDeleteUser(false)
                 }
             })
     }
     const handleRole = () => {
-
+        fetch(`http://localhost:5000/user/${suser?._id}`, {
+            method: 'PUT',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ role: true })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data) {
+                    toast.apply('User updated to Admin')
+                }
+            })
     }
     return (
         <tr>
@@ -28,7 +40,6 @@ const User = ({ suser, refetch }) => {
                             <img src={suser?.img} alt='' />
                         </div>
                     </div>
-
                 </div>
             </td>
             <td>
@@ -37,7 +48,7 @@ const User = ({ suser, refetch }) => {
                     <div className="text-sm opacity-50">{suser?.email}</div>
                 </div>
             </td>
-            <td><button onClick={handleRole} className='btn btn-xs px-0 btn-ghost'>Make Admin</button></td>
+            <td>{suser?.role ? <span className='text-green-600 text-sm'>Admin</span> : <button onClick={handleRole} className='btn btn-xs px-0 btn-ghost'>Make Admin</button>}</td>
             <th>
                 <label htmlFor="my-modal" className="btn btn-circle btn-outline btn-xs">X</label>
                 <input type="checkbox" id="my-modal" className="modal-toggle" />

@@ -9,7 +9,11 @@ const BuyerPrivateRoute = ({ children }) => {
     const { data: sUser = [], isLoading, refetch } = useQuery({
         queryKey: ['user', user?.email],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/users/${user?.email}`)
+            const res = await fetch(`http://localhost:5000/users/${user?.email}`, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('filterhouse-token')}`
+                }
+            })
             const data = await res.json()
             return data
         }
