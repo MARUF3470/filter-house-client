@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
+import DeleteUserModal from './DeleteUserModal';
 import User from './User';
 
 const Allusers = () => {
+    const [deleteUser, setDeleteUser] = useState(null)
     const { data: Savedusers = [], refetch, isLoading } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
@@ -27,9 +29,12 @@ const Allusers = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {Savedusers?.map(suser => <User key={suser._id} suser={suser} refetch={refetch}></User>)}
+                    {Savedusers?.map(suser => <User key={suser._id} suser={suser} refetch={refetch} setDeleteUser={setDeleteUser}></User>)}
                 </tbody>
             </table>
+            {
+                deleteUser && <DeleteUserModal deleteUser={deleteUser} refetch={refetch} setDeleteUser={setDeleteUser}></DeleteUserModal>
+            }
         </div>
     );
 };

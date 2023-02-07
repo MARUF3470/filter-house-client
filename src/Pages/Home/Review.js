@@ -6,18 +6,19 @@ const Review = ({ review, i, refetch }) => {
     const [showUpdateModal, setShowUpdateModal] = useState(false)
     const handleUpdate = event => {
         event.preventDefault()
-        const review = event.target.newReview.value
+        const updatedReview = event.target.newReview.value
         console.log(review)
         fetch(`http://localhost:5000/reviews/${review._id}`, {
             method: 'PATCH',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ data: review })
+            body: JSON.stringify({ data: updatedReview })
         })
             .then(res => res.json())
             .then(data => {
                 if (data.acknowledged) {
-                    toast.success('Your review updated')
                     refetch()
+                    toast.success('Your review updated')
+                    setShowUpdateModal(false)
                 }
             })
     }
@@ -29,8 +30,8 @@ const Review = ({ review, i, refetch }) => {
             .then(res => res.json())
             .then(data => {
                 if (data) {
-                    toast.success('Your review is deleted')
                     refetch()
+                    toast.success('Your review is deleted')
                 }
             })
     }

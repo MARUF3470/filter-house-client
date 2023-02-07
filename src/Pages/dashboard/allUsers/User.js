@@ -2,22 +2,7 @@ import React, { useContext, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 
-const User = ({ suser, refetch }) => {
-    const [deleteUser, setDeleteUser] = useState(false)
-    if (deleteUser) {
-        fetch(`http://localhost:5000/user/${suser?._id}`, {
-            method: 'DELETE',
-            headers: { "Content-Type": "application/json" },
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.acknowledged) {
-                    toast.success('User Deleted')
-                    refetch()
-                    setDeleteUser(false)
-                }
-            })
-    }
+const User = ({ suser, refetch, setDeleteUser }) => {
     const handleRole = () => {
         fetch(`http://localhost:5000/user/${suser?._id}`, {
             method: 'PUT',
@@ -27,7 +12,8 @@ const User = ({ suser, refetch }) => {
             .then(res => res.json())
             .then(data => {
                 if (data) {
-                    toast.apply('User updated to Admin')
+                    refetch()
+                    toast.success('User updated to Admin')
                 }
             })
     }
@@ -50,17 +36,7 @@ const User = ({ suser, refetch }) => {
             </td>
             <td>{suser?.role ? <span className='text-green-600 text-sm'>Admin</span> : <button onClick={handleRole} className='btn btn-xs px-0 btn-ghost'>Make Admin</button>}</td>
             <th>
-                <label htmlFor="my-modal" className="btn btn-circle btn-outline btn-xs">X</label>
-                <input type="checkbox" id="my-modal" className="modal-toggle" />
-                <div className="modal">
-                    <div className="modal-box">
-                        <h3 className="font-semibold text-lg">Do you want to delete {suser?.name}</h3>
-                        <div className="modal-action">
-                            <label htmlFor="my-modal" onClick={() => setDeleteUser(true)} className="btn btn-sm btn-outline">Delete</label>
-                            <label htmlFor="my-modal" className="btn btn-sm btn-outline">Cancel</label>
-                        </div>
-                    </div>
-                </div>
+                <label htmlFor="booking-modal" onClick={() => setDeleteUser(suser)} className="btn btn-circle btn-xs btn-outline">X</label>
             </th>
         </tr>
     );
