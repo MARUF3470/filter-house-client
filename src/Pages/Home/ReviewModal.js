@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useContext } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
+
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../authintication/AuthProvider';
+import Review from './Review';
 
 const ReviewModal = () => {
     const [showModal, setShowModal] = React.useState(false);
@@ -20,35 +20,7 @@ const ReviewModal = () => {
             return data
         }
     })
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const handleUpdate = (data) => {
-        console.log(data)
-        fetch(`http://localhost:5000/reviews/${data.id}`, {
-            method: 'PATCH',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ data: data.review })
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.acknowledged) {
-                    toast.success('Your review updated')
-                    refetch()
-                }
-            })
-    }
-    const handleDelete = id => {
-        fetch(`http://localhost:5000/reviews/${id}`, {
-            method: 'DELETE',
-            headers: { "Content-Type": "application/json" },
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data) {
-                    toast.success('Your review is deleted')
-                    refetch()
-                }
-            })
-    }
+
     return (
         <div className=''>
             <button
@@ -83,31 +55,14 @@ const ReviewModal = () => {
                                         <table className="table w-full">
                                             <thead>
                                                 <tr>
-                                                    <th></th>
+                                                    <th>No</th>
                                                     <th>Your Comment</th>
                                                     <th>Update</th>
                                                     <th>Delete</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {reviews?.map((review, i) => <tr key={review._id}>
-                                                    <th>{i + 1}</th>
-                                                    <td>{review?.review}</td>
-
-                                                    <td className='my-auto' > <label htmlFor="my-modal2" className="btn btn-outline btn-xs">Update</label>
-                                                        <input type="checkbox" id="my-modal2" className="modal-toggle" />
-                                                        <form className="modal" onSubmit={handleSubmit(handleUpdate)}>
-                                                            <div className="modal-box">
-                                                                <textarea className="textarea textarea-bordered w-full" {...register('review')} defaultValue={review?.review}></textarea>
-                                                                <input type="text" {...register('id')} defaultValue={review?._id} hidden readOnly />
-                                                                <div className="modal-action">
-                                                                    <input type='submit' htmlFor="my-modal2" className="btn btn-sm btn-outline" value='Update' />
-                                                                    <label htmlFor="my-modal2" className="btn btn-sm btn-outline">Cancel</label>
-                                                                </div>
-                                                            </div>
-                                                        </form></td>
-                                                    <td className='my-auto'><button onClick={() => handleDelete(review._id)} className='btn btn-xs btn-ghost pl-0'>Delete</button></td>
-                                                </tr>)}
+                                                {reviews?.map((review, i) => <Review key={review._id} review={review} i={i} refetch={refetch}></Review>)}
                                             </tbody>
                                         </table>
                                     </div>
