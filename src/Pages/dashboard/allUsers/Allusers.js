@@ -8,7 +8,7 @@ const Allusers = () => {
     const { data: Savedusers = [], refetch, isLoading } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/users', {
+            const res = await fetch('https://filter-house-server.vercel.app/users', {
                 headers: {
                     authorization: `Bearer ${localStorage.getItem('filterhouse-token')}`
                 }

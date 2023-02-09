@@ -58,7 +58,7 @@ const Home = () => {
     const { data: products = [], refetch, error, isLoadingError } = useQuery({
         queryKey: ['products'],
         queryFn: async () => {
-            const req = await fetch('http://localhost:5000/products')
+            const req = await fetch('https://filter-house-server.vercel.app/products')
             const data = await req.json()
             return data
         }
@@ -66,7 +66,7 @@ const Home = () => {
     const { data: reviews = [] } = useQuery({
         queryKey: ['reviews'],
         queryFn: async () => {
-            const req = await fetch('http://localhost:5000/reviews')
+            const req = await fetch('https://filter-house-server.vercel.app/reviews')
             const data = await req.json()
             refetch()
             return data
@@ -80,7 +80,7 @@ const Home = () => {
             email: user?.email
         }
         event.preventDefault()
-        fetch('http://localhost:5000/reviews', {
+        fetch('https://filter-house-server.vercel.app/reviews', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ const Home = () => {
             .then(res => res.json())
             .then(data => {
                 if (data.acknowledged) {
-                    toast.success('Your review added')
+                    toast.success('Your review added. It might take some time to show your review')
                     refetch()
                     event.target.reset()
                 }
@@ -99,7 +99,7 @@ const Home = () => {
     const { data: Suser = [], } = useQuery({
         queryKey: ['users', user?.email],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/users/${user?.email}`, {
+            const res = await fetch(`https://filter-house-server.vercel.app/users/${user?.email}`, {
                 headers: {
                     authorization: `Bearer ${localStorage.getItem('filterhouse-token')}`
                 }
@@ -165,7 +165,7 @@ const Home = () => {
                     <div className='col-span-1'>
                         <h5 className='text-lg font-bold'>Add Your review</h5>
                         <form onSubmit={handleSubmit(handleReview)} className='border p-3 rounded-md shadow-2xl'>
-                            <input type='text' {...register('name', { required: 'You need to login to give your review' })} className='input input-bordered w-full' defaultValue={user?.displayName} readOnly />
+                            <input type='text' {...register('name', { required: 'You need to login to give your review or try again' })} className='input input-bordered w-full' defaultValue={user?.displayName} readOnly />
                             {errors.name && <p className='text-red-500 mt-1 text-xs'>{errors.name.message}</p>}
                             <textarea {...register('review', { required: 'Give your review' })} className="textarea textarea-bordered w-full mt-2" placeholder="Type your review"></textarea>
                             {errors.review && <p className='text-red-500 mb-1 text-xs'> {errors.review.message}</p>}

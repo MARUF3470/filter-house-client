@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 
 const User = ({ suser, refetch, setDeleteUser }) => {
     const handleRole = () => {
-        fetch(`http://localhost:5000/user/${suser?._id}`, {
+        fetch(`https://filter-house-server.vercel.app/user/${suser?._id}`, {
             method: 'PUT',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ role: true })

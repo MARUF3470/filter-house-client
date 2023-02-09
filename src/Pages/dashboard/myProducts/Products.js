@@ -6,7 +6,7 @@ const Products = ({ product, refetch }) => {
     const handleDelete = id => {
         const confirmation = window.confirm(`Do you want to delete ${product?.name}`)
         if (confirmation) {
-            fetch(`http://localhost:5000/products/${id}`, {
+            fetch(`https://filter-house-server.vercel.app/products/${id}`, {
                 method: 'DELETE',
             })
                 .then(res => res.json())
@@ -19,7 +19,7 @@ const Products = ({ product, refetch }) => {
         }
     }
     const handleAdvertise = (value) => {
-        fetch(`http://localhost:5000/products/${product._id}`, {
+        fetch(`https://filter-house-server.vercel.app/products/${product._id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

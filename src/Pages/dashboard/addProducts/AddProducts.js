@@ -26,7 +26,7 @@ const AddProducts = () => {
                         price: data.price,
                         img: imgdata.data.url
                     }
-                    fetch('http://localhost:5000/products', {
+                    fetch('https://filter-house-server.vercel.app/products', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

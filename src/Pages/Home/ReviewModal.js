@@ -11,7 +11,7 @@ const ReviewModal = () => {
     const { data: reviews = [], refetch, isLoading } = useQuery({
         queryKey: ['reviews', user?.email],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/reviews/${user?.email}`, {
+            const res = await fetch(`https://filter-house-server.vercel.app/reviews/${user?.email}`, {
                 headers: {
                     authorization: `Bearer ${localStorage.getItem('filterhouse-token')}`
                 }

@@ -6,7 +6,7 @@ const DeleteUserModal = ({ deleteUser, setDeleteUser, refetch }) => {
         setDeleteUser(null)
     }
     const handleDeleteUser = id => {
-        fetch(`http://localhost:5000/user/${id}`, {
+        fetch(`https://filter-house-server.vercel.app/user/${id}`, {
             method: 'DELETE',
             headers: { "Content-Type": "application/json" },
         })

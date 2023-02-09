@@ -1,11 +1,8 @@
 import React, { useContext, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { themeChange } from 'theme-change';
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { Avatar, Dropdown, Navbar } from 'flowbite-react';
 import logo from '../../components/images/filterpic/car-air-filters-icon-simple-260nw-713697937-removebg-preview.png'
+import { RxAvatar } from 'react-icons/rx';
 import { AuthContext } from '../authintication/AuthProvider';
 import { toast } from 'react-hot-toast';
 import { useQuery } from '@tanstack/react-query';
@@ -15,12 +12,11 @@ const Header = () => {
         themeChange(false)
     }, [])
     const { register, handleSubmit, formState: { errors } } = useForm()
-    const { user, logOut } = useContext(AuthContext)
-    const location = useLocation()
-    const { data: Suser = [], } = useQuery({
+    const { user, logOut, updateUser } = useContext(AuthContext)
+    const { data: Suser = [], refetch } = useQuery({
         queryKey: ['users', user?.email],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/users/${user?.email}`, {
+            const res = await fetch(`https://filter-house-server.vercel.app/users/${user?.email}`, {
                 headers: {
                     authorization: `Bearer ${localStorage.getItem('filterhouse-token')}`
                 }
@@ -42,6 +38,52 @@ const Header = () => {
         </>}
         <Link to='/contact' className='btn btn-ghost'>Contuct us</Link>
     </>
+    const handleUpdate = (data, event) => {
+        const imgKey = process.env.REACT_APP_imgkey
+        console.log(data)
+        const image = data.picture[0]
+        const formData = new FormData();
+        formData.append('image', image)
+        const url = `https://api.imgbb.com/1/upload?key=${imgKey}`
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => res.json())
+            .then(imgdata => {
+                if (imgdata.success) {
+                    const profile = {
+                        displayName: data.name,
+                        photoURL: imgdata.data.url
+                    }
+                    updateUser(profile)
+                        .then(() => {
+                            toast.custom((t) => (
+                                <div
+                                    className={`${t.visible ? 'animate-enter' : 'animate-leave'
+                                        } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                                >
+                                    <div className="flex-1 w-0 p-4">
+                                        <div className="flex items-start">
+                                            <p>Your Profile is updated, it may take some seceonds to updated the profile or reload the page</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex border-l border-gray-200">
+                                        <button
+                                            onClick={() => toast.dismiss(t.id)}
+                                            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        >
+                                            Close
+                                        </button>
+                                    </div>
+                                </div>
+                            ))
+                        })
+                        .catch(err => console.error(err))
+                }
+            })
+
+    }
     return (
         <div className="navbar bg-base-100">
             <div className="navbar-start">
@@ -62,16 +104,17 @@ const Header = () => {
             </div>
             <div className="navbar-end">
                 <div className="dropdown dropdown-end cursor-pointer">
-                    <div tabIndex={0} className="avatar">
-                        <div className="w-12 rounded-full">
-                            <img src={user?.photoURL} alt='' />
-                        </div>
-                    </div>
+                    {user?.email ?
+                        <div tabIndex={0} className="avatar">
+                            <div className="w-12 rounded-full">
+                                <img src={user?.photoURL} alt='' />
+                            </div>
+                        </div> : <RxAvatar className='w-10 h-10'></RxAvatar>}
                     <ul tabIndex={0} className="menu dropdown-content p-2 shadow bg-base-100 rounded-md w-52 mt-4">
-                        <h3 className='mx-2 text-sm'>{Suser?.name}</h3>
+                        <h3 className='mx-2 text-sm'>{user?.displayName}</h3>
                         <h3 className='mx-2 text-sm'>{Suser?.email}</h3>
-                        <label htmlFor="my-modal" className="btn btn-xs mt-2 btn-outline btn-primary w-fit">Edit Profile</label>
 
+                        {user?.email && <label htmlFor="my-modal" className="btn btn-xs mt-2 btn-outline btn-primary w-fit">Edit Profile</label>}
                         {user?.email && <button onClick={handleSingOut} className='btn btn-xs mt-2 btn-outline btn-primary w-fit'>Log out</button>}
                         <label className="swap w-fit swap-rotate ml-2 mt-1"  >
                             <input type="checkbox" />
@@ -81,13 +124,13 @@ const Header = () => {
                     </ul>
                     <input type="checkbox" id="my-modal" className="modal-toggle" />
                     <div className="modal">
-                        <form className="modal-box">
+                        <form onSubmit={handleSubmit(handleUpdate)} className="modal-box">
                             <label htmlFor="my-modal" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
                             <label className="label">
                                 <span className="label-text">Name:</span>
                             </label>
-
-                            <input className="py-4 input input-bordered" defaultValue={user?.displayName} />
+                            <input  {...register('name', { required: 'Provide your new name' })} className="py-4 input input-bordered" defaultValue={user?.displayName} />
+                            {errors.name && <p className='text-red-400 text-xs mt-1'>{errors.name.message}</p>}
                             <label className="label">
                                 <span className="label-text">Image:</span>
                             </label>
@@ -103,7 +146,7 @@ const Header = () => {
                             </div>
                             {errors.picture && <p className='text-red-400 text-xs mt-1'>{errors.picture.message}</p>}
                             <div className="modal-action">
-                                <label htmlFor="my-modal" className="btn">Update</label>
+                                <input type="submit" className='btn btn-primary' value="Update" />
                             </div>
                         </form>
                     </div>

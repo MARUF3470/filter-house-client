@@ -8,7 +8,7 @@ const Review = ({ review, i, refetch }) => {
         event.preventDefault()
         const updatedReview = event.target.newReview.value
         console.log(review)
-        fetch(`http://localhost:5000/reviews/${review._id}`, {
+        fetch(`https://filter-house-server.vercel.app/reviews/${review._id}`, {
             method: 'PATCH',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ data: updatedReview })
@@ -23,7 +23,7 @@ const Review = ({ review, i, refetch }) => {
             })
     }
     const handleDelete = id => {
-        fetch(`http://localhost:5000/reviews/${id}`, {
+        fetch(`https://filter-house-server.vercel.app/reviews/${id}`, {
             method: 'DELETE',
             headers: { "Content-Type": "application/json" },
         })

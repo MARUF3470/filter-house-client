@@ -38,7 +38,7 @@ const Registration = () => {
                                 email: user.email
                             }
                             toast.success('User registration done')
-                            fetch('http://localhost:5000/jwt', {
+                            fetch('https://filter-house-server.vercel.app/jwt', {
                                 method: 'POST',
                                 headers: {
                                     'content-type': 'application/json'
@@ -73,7 +73,7 @@ const Registration = () => {
                 name: profile.displayName,
                 img: profile.photoURL
             }
-            fetch('http://localhost:5000/users', {
+            fetch('https://filter-house-server.vercel.app/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
